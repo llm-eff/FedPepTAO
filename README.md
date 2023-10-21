@@ -32,6 +32,9 @@ If you find this work helpful to your research, please consider cite our paper: 
     title     = "Federated Learning of Large Language Models with Parameter-Efficient Prompt Tuning and Adaptive Optimization",
     author    = "Tianshi Che and Ji Liu and Yang Zhou and Jiaxiang Ren and Jiwen Zhou and Victor S. Sheng and Huaiyu Dai and Dejing Dou",
     booktitle = "Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing",
-    year      = "2023"
+    month     = dec,
+    year      = "2023",
+    address   = "Singapore",
+    publisher = "Association for Computational Linguistics"
 }
 ```
