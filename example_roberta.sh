@@ -1,6 +1,6 @@
 export GLUE_DIR=/datasets/
-export TASK_NAME=rte
-export MODEL_NAME_OR_PATH=roberta-large
+export TASK_NAME=rte # options: boolq, cola, mpqa, mr, mrpc, qnli, rte, sst-2, subj, trec
+export MODEL_NAME_OR_PATH=roberta-large # options: roberta-large, gpt2-large, openlm-research/open_llama_3b, openlm-research/open_llama_7b
 NUMCLIENTS=100
 NUMEPOCHS=100
 SAMPLERATE=0.1
@@ -128,7 +128,8 @@ python encoder-only-roberta-large/run_fed_pers_with_optim_v2.py \
     --sample_rate $SAMPLERATE \
     --local_eps $LOCALEPS &
 
-# The above steps are the same for all models and datasets; you just need to replace the corresponding parameters, such as "TASK_NAME", "MODEL_NAME_OR_PATH", and the code's directory, i.e., "encoder-only-roberta-large."
+# The above steps are the same for all models and datasets; you just need to replace the corresponding parameters, 
+# such as "TASK_NAME", "MODEL_NAME_OR_PATH", and the code's directory, i.e., "encoder-only-roberta-large."
 
 
 
