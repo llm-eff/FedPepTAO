@@ -91,7 +91,7 @@ def train(args, train_dataset, model, tokenizer):
     train_sampler = RandomSampler(train_dataset) if args.local_rank == -1 else DistributedSampler(train_dataset)
     train_dataloader = DataLoader(train_dataset, sampler=train_sampler, batch_size=args.train_batch_size, collate_fn=train_dataset.collate_fn)    
     eval_dataset = PromptDataset(args, args.task_name, tokenizer, data_type='dev')
-    train_dataloader_list, eval_dataloader_list, n_sample_list = partition(args, train_dataset, eval_dataset)
+    train_dataloader_list, eval_dataloader_list, n_sample_list = partition(args, train_dataset, eval_dataset, logger)
 
     if args.max_steps > 0:
         t_total = args.max_steps
@@ -120,6 +120,8 @@ def train(args, train_dataset, model, tokenizer):
 
         if args.optim == "fsgdm":
             optimizer = Fsgdm(model, args.learning_rate, args.momentum)
+        elif args.optim == "fadamw":
+            optimizer = AdamW(optimizer_grouped_parameters, lr=args.learning_rate, eps=args.adam_epsilon)
         elif args.optim == "adam":
             optimizer = torch.optim.Adam(model.parameters(), args.learning_rate)
         elif args.optim == "sgd":
@@ -504,6 +506,7 @@ def main():
     config.proj_down_size = args.proj_down_size
     config.prefix_projection = False
     config.pre_seq_len = config.num_prompt_tokens
+    config.personalization = args.personalization
 
     tokenizer = RobertaTokenizer.from_pretrained(
         args.model_name_or_path,

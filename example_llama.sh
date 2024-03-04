@@ -1,4 +1,5 @@
-export GLUE_DIR=/datasets/
+BASE_PATH=$(dirname "$(realpath "$0")")
+export GLUE_DIR="$BASE_PATH/datasets/"
 export TASK_NAME=mrpc # options: boolq, cola, mpqa, mr, mrpc, qnli, rte, sst-2, subj, trec
 export MODEL_NAME_OR_PATH=openlm-research/open_llama_7b # options: roberta-large, gpt2-large, openlm-research/open_llama_3b, openlm-research/open_llama_7b
 NUMCLIENTS=100
@@ -47,7 +48,7 @@ python decoder-only-llama/run_getscore.py \
       --seed 42 \
       --num_clients $NUMCLIENTS \
       --sample_rate $SAMPLERATE \
-      --local_eps $LOCALEPS &
+      --local_eps $LOCALEPS
 
 # Step 2: Use the following code to calculate the minimum remaining prompt parameter ratio:
 export CUDA_VISIBLE_DEVICES=0
@@ -83,7 +84,7 @@ python decoder-only-llama/run_getpr_perclient.py \
       --seed 42 \
       --num_clients $NUMCLIENTS \
       --sample_rate $SAMPLERATE \
-      --local_eps $LOCALEPS &
+      --local_eps $LOCALEPS
 
 # By combining the sorted layer indexes from Step 1 and the ratio calculated in Step 2, selected layers for efficient prompt tuning can be obtained
 # e.g.: efficient prompt tuning layers for llama-7b model on MRPC dataset: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
@@ -124,7 +125,7 @@ python decoder-only-llama/run_fed_pers_with_optim_v2.py \
     --seed 42 \
     --num_clients $NUMCLIENTS \
     --sample_rate $SAMPLERATE \
-    --local_eps $LOCALEPS &
+    --local_eps $LOCALEPS
 
 # The above steps are the same for all models and datasets; you just need to replace the corresponding parameters, 
 # such as "TASK_NAME", "MODEL_NAME_OR_PATH", and the code's directory, i.e., "encoder-only-roberta-large."
